@@ -71,6 +71,15 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Alchemy"",
+                    ""type"": ""Button"",
+                    ""id"": ""cceada27-a3cc-4377-8e9c-fd1b474dd8bd"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -247,6 +256,17 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""GoBack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7dc801c4-022b-4b85-aafe-44d82fe1e31b"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Alchemy"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -839,6 +859,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         m_Player_Object = m_Player.FindAction("Object", throwIfNotFound: true);
         m_Player_Flee = m_Player.FindAction("Flee", throwIfNotFound: true);
         m_Player_GoBack = m_Player.FindAction("GoBack", throwIfNotFound: true);
+        m_Player_Alchemy = m_Player.FindAction("Alchemy", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -917,6 +938,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Object;
     private readonly InputAction m_Player_Flee;
     private readonly InputAction m_Player_GoBack;
+    private readonly InputAction m_Player_Alchemy;
     public struct PlayerActions
     {
         private @PlayerAction m_Wrapper;
@@ -926,6 +948,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         public InputAction @Object => m_Wrapper.m_Player_Object;
         public InputAction @Flee => m_Wrapper.m_Player_Flee;
         public InputAction @GoBack => m_Wrapper.m_Player_GoBack;
+        public InputAction @Alchemy => m_Wrapper.m_Player_Alchemy;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -950,6 +973,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @GoBack.started += instance.OnGoBack;
             @GoBack.performed += instance.OnGoBack;
             @GoBack.canceled += instance.OnGoBack;
+            @Alchemy.started += instance.OnAlchemy;
+            @Alchemy.performed += instance.OnAlchemy;
+            @Alchemy.canceled += instance.OnAlchemy;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -969,6 +995,9 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @GoBack.started -= instance.OnGoBack;
             @GoBack.performed -= instance.OnGoBack;
             @GoBack.canceled -= instance.OnGoBack;
+            @Alchemy.started -= instance.OnAlchemy;
+            @Alchemy.performed -= instance.OnAlchemy;
+            @Alchemy.canceled -= instance.OnAlchemy;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1156,6 +1185,7 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         void OnObject(InputAction.CallbackContext context);
         void OnFlee(InputAction.CallbackContext context);
         void OnGoBack(InputAction.CallbackContext context);
+        void OnAlchemy(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

@@ -544,7 +544,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2027325369}
-  - {fileID: 1018998590}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1212,7 +1211,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &663740437
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1252,7 +1251,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 29ceeeac1c7fd36428c44eee47e8e306, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3b4b786a7e689cb42a35f0299c73d210, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1819,8 +1818,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1018998589}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 26, y: -332, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 26, y: 35, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1829,7 +1828,7 @@ Transform:
   - {fileID: 509419388}
   - {fileID: 1449877782}
   - {fileID: 1679466147}
-  m_Father: {fileID: 304109900}
+  m_Father: {fileID: 2027325369}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1037347076
 GameObject:
@@ -2485,6 +2484,7 @@ MonoBehaviour:
   _attackButton: {fileID: 1294137159}
   _objectButton: {fileID: 766402528}
   _fleeButton: {fileID: 1521869946}
+  _alchemyButton: {fileID: 663740436}
   _abilityMenu: {fileID: 1018998589}
   _creature: {fileID: 11400000, guid: 0ec70be008ecc95498540a4db75a6edc, type: 2}
   _abilityUI1: {fileID: 90734538}
@@ -3405,6 +3405,7 @@ RectTransform:
   - {fileID: 1521869947}
   - {fileID: 1294137160}
   - {fileID: 663740437}
+  - {fileID: 1018998590}
   m_Father: {fileID: 304109900}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}

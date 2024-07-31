@@ -13,10 +13,13 @@ public class PlayerBattleController : MonoBehaviour
     InputAction _attackAction;
     InputAction _objectAction;
     InputAction _fleeAction;
+    InputAction _alchemyAction;
     InputAction _goBackAction;
     #endregion
 
     #region Serialized Propierties
+
+    [Header("Battle Buttons")]
     [SerializeField]
     private GameObject _attackButton;
 
@@ -27,8 +30,14 @@ public class PlayerBattleController : MonoBehaviour
     private GameObject _fleeButton;
 
     [SerializeField]
+    private GameObject _alchemyButton;
+
+    [Header("")]
+    [SerializeField]
     private GameObject _abilityMenu;
 
+
+    [Header("")]
     [SerializeField]
     private Creature _creature;
 
@@ -53,45 +62,57 @@ public class PlayerBattleController : MonoBehaviour
         _attackAction = _inputAction.Player.Attack;
         _objectAction = _inputAction.Player.Object;
         _fleeAction = _inputAction.Player.Flee;
+        _alchemyAction = _inputAction.Player.Alchemy;
         _goBackAction = _inputAction.Player.GoBack;
         _abilityUI1.GetComponentInChildren<Text>().text = _creature._ability1.name;
 
         //Delete when turns system completed
 
-        AOFEnable();
+        AOFAEnable();
 
     }
 
-    #region AOF functions
+    #region AOFA functions
 
     private void Attack(InputAction.CallbackContext context)
     {
         
-        AOFDisable();
+        AOFADisable();
         _abilityMenu.SetActive(true);
         EventSystem.current.SetSelectedGameObject(_abilityUI1); // Remember to add this when exiting attack menu
         _goBackAction.Enable();
-        _goBackAction.performed += EnableAOF;
+        _goBackAction.performed += EnableAOFA;
         
     }
 
     private void Object(InputAction.CallbackContext context)
     {
-        AOFDisable();
+        AOFADisable();
     }
 
     private void Flee(InputAction.CallbackContext context)
     {
-        AOFDisable();
+        AOFADisable();
     }
+
+    private void Alchemy(InputAction.CallbackContext context)
+    {
+        AOFADisable();
+    }
+
     #endregion
 
-    #region Enable and disable AOF
-    private void AOFEnable()
+    #region Enable and disable AOFA
+    private void AOFAEnable()
     {
+
+        //AOFA UI ENABLE
         _attackButton.SetActive(true);
         _objectButton.SetActive(true);
         _fleeButton.SetActive(true);
+        _alchemyButton.SetActive(true);
+
+        //AOFA ACTION ENABLE
         _attackAction.Enable();
         _attackAction.performed += Attack;
 
@@ -100,16 +121,20 @@ public class PlayerBattleController : MonoBehaviour
 
         _fleeAction.Enable();
         _fleeAction.performed += Flee;
+
+        _alchemyAction.Enable();
+        _alchemyAction.performed += Alchemy;
     }
 
-    private void AOFDisable()
+    private void AOFADisable()
     {
-        // AOF UI DISABLE
+        // AOFA UI DISABLE
         _attackButton.SetActive(false);
         _objectButton.SetActive(false);
         _fleeButton.SetActive(false);
+        _alchemyButton.SetActive(false);
 
-        // AOF ACTIONS DISABLE
+        // AOFA ACTIONS DISABLE
         _attackAction.Disable();
         _attackAction.performed -= Attack;
 
@@ -118,22 +143,27 @@ public class PlayerBattleController : MonoBehaviour
 
         _fleeAction.Disable();
         _fleeAction.performed -= Flee;
+
+        _alchemyAction.Disable();
+        _alchemyAction.performed -= Alchemy;
+        
+
     }
     #endregion
 
     #region Enable and disable actions
-    public void EnableAOF(InputAction.CallbackContext context)
+    public void EnableAOFA(InputAction.CallbackContext context)
     {
         _abilityMenu.SetActive(false);
         _goBackAction.Disable();
-        _goBackAction.performed -= EnableAOF;
-        AOFEnable();
+        _goBackAction.performed -= EnableAOFA;
+        AOFAEnable();
         
     }
 
-    public void DisableAOF(InputAction.CallbackContext context)
+    public void DisableAOFA(InputAction.CallbackContext context)
     {
-        AOFDisable();
+        AOFADisable();
     }
     #endregion
 
