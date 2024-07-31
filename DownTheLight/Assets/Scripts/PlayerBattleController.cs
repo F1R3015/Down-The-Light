@@ -52,6 +52,8 @@ public class PlayerBattleController : MonoBehaviour
     private GameObject _abilityUI4;
     [SerializeField]
     private GameObject _abilityDescriptionUI;
+    [SerializeField]
+    private GameObject _goBackButton;
 
 
     #endregion
@@ -64,9 +66,9 @@ public class PlayerBattleController : MonoBehaviour
         _fleeAction = _inputAction.Player.Flee;
         _alchemyAction = _inputAction.Player.Alchemy;
         _goBackAction = _inputAction.Player.GoBack;
-        _abilityUI1.GetComponentInChildren<Text>().text = _creature._ability1.name;
+        _abilityUI1.GetComponentInChildren<Text>().text = _creature._ability1.name; // Create function that checks if ability then name else blank ( could be other image better? ) 
 
-        //Delete when turns system completed
+        //Delete when turns system completed ( The Battle Manager will be the one doing it) 
 
         AOFAEnable();
 
@@ -79,6 +81,7 @@ public class PlayerBattleController : MonoBehaviour
         
         AOFADisable();
         _abilityMenu.SetActive(true);
+        _goBackButton.SetActive(true);
         EventSystem.current.SetSelectedGameObject(_abilityUI1); // Remember to add this when exiting attack menu
         _goBackAction.Enable();
         _goBackAction.performed += EnableAOFA;
@@ -156,6 +159,7 @@ public class PlayerBattleController : MonoBehaviour
     public void EnableAOFA(InputAction.CallbackContext context)
     {
         _abilityMenu.SetActive(false);
+        _goBackButton.SetActive(false);
         _goBackAction.Disable();
         _goBackAction.performed -= EnableAOFA;
         AOFAEnable();
