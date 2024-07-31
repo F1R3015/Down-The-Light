@@ -55,6 +55,12 @@ public class PlayerBattleController : MonoBehaviour
     [SerializeField]
     private GameObject _goBackButton;
 
+    [Header("Bars")]
+    [SerializeField]
+    private GameObject _hpBar;
+
+    [SerializeField]
+    private GameObject _manaBar;
 
     #endregion
 

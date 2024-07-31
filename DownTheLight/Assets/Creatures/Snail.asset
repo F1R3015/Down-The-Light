@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f80c964aaa37d6043881836452bf0b78, type: 3}
+  m_Name: Snail
+  m_EditorClassIdentifier: 
+  _health: 4
+  _maximumHealth: 4
+  _mana: 5
+  _maxMana: 5
+  _primaryType: 3
+  _secondaryType: 0
+  _strength: 2
+  _baseStrength: 2
+  _defence: 3
+  _baseDefence: 3
+  _speed: 1
+  _baseSpeed: 1
+  _accuracy: 3
+  _baseAccuracy: 3
+  _ability1: {fileID: 0}
+  _ability2: {fileID: 0}
+  _ability3: {fileID: 0}
+  _ability4: {fileID: 0}
