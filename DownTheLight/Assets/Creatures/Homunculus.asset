@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f80c964aaa37d6043881836452bf0b78, type: 3}
+  m_Name: Homunculus
+  m_EditorClassIdentifier: 
+  _health: 10
+  _maximumHealth: 10
+  _mana: 20
+  _maxMana: 20
+  _primaryType: 6
+  _secondaryType: 0
+  _strength: 5
+  _baseStrength: 5
+  _defence: 6
+  _baseDefence: 6
+  _speed: 4
+  _baseSpeed: 4
+  _accuracy: 5
+  _baseAccuracy: 5
+  _ability1: {fileID: 11400000, guid: a1fbaaf4074c28e4487c75a49047c853, type: 2}
+  _ability2: {fileID: 0}
+  _ability3: {fileID: 0}
+  _ability4: {fileID: 0}

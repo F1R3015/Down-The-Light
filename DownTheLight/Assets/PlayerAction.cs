@@ -35,6 +35,42 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""1726800a-7f69-4e08-b73b-830e58567030"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Object"",
+                    ""type"": ""Button"",
+                    ""id"": ""a53e37a8-cd4b-4751-923c-83014ce33836"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Flee"",
+                    ""type"": ""Button"",
+                    ""id"": ""02f7dcc5-cb22-496e-9a7e-182f2714796e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""GoBack"",
+                    ""type"": ""Button"",
+                    ""id"": ""2e9118f8-82d7-4353-bb42-0fad4c3f2e90"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -167,6 +203,50 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Joystick"",
                     ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""65ee0740-be20-4e21-aece-974623e046f6"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4dc3aa11-57cc-4b20-932a-93f11ffd52ff"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Object"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""97e11fdd-ea98-4731-8c86-45c8bc1832a3"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Flee"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ed1dfc04-d597-4ab9-964c-9f75fd93541e"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""GoBack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -755,6 +835,10 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
+        m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
+        m_Player_Object = m_Player.FindAction("Object", throwIfNotFound: true);
+        m_Player_Flee = m_Player.FindAction("Flee", throwIfNotFound: true);
+        m_Player_GoBack = m_Player.FindAction("GoBack", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -829,11 +913,19 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
+    private readonly InputAction m_Player_Attack;
+    private readonly InputAction m_Player_Object;
+    private readonly InputAction m_Player_Flee;
+    private readonly InputAction m_Player_GoBack;
     public struct PlayerActions
     {
         private @PlayerAction m_Wrapper;
         public PlayerActions(@PlayerAction wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
+        public InputAction @Attack => m_Wrapper.m_Player_Attack;
+        public InputAction @Object => m_Wrapper.m_Player_Object;
+        public InputAction @Flee => m_Wrapper.m_Player_Flee;
+        public InputAction @GoBack => m_Wrapper.m_Player_GoBack;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -846,6 +938,18 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
+            @Object.started += instance.OnObject;
+            @Object.performed += instance.OnObject;
+            @Object.canceled += instance.OnObject;
+            @Flee.started += instance.OnFlee;
+            @Flee.performed += instance.OnFlee;
+            @Flee.canceled += instance.OnFlee;
+            @GoBack.started += instance.OnGoBack;
+            @GoBack.performed += instance.OnGoBack;
+            @GoBack.canceled += instance.OnGoBack;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -853,6 +957,18 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
+            @Object.started -= instance.OnObject;
+            @Object.performed -= instance.OnObject;
+            @Object.canceled -= instance.OnObject;
+            @Flee.started -= instance.OnFlee;
+            @Flee.performed -= instance.OnFlee;
+            @Flee.canceled -= instance.OnFlee;
+            @GoBack.started -= instance.OnGoBack;
+            @GoBack.performed -= instance.OnGoBack;
+            @GoBack.canceled -= instance.OnGoBack;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -1036,6 +1152,10 @@ public partial class @PlayerAction: IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
+        void OnObject(InputAction.CallbackContext context);
+        void OnFlee(InputAction.CallbackContext context);
+        void OnGoBack(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
