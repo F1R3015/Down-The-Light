@@ -82,6 +82,7 @@ public class PlayerBattleController : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(_abilityUI1); // Remember to add this when exiting attack menu
         _goBackAction.Enable();
         _goBackAction.performed += EnableAOFA;
+        AbilitySelected(1);
         
     }
 
