@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 906ba543f1618ca43b1b5999acd0b870, type: 3}
   m_Name: FireBall
   m_EditorClassIdentifier: 
-  _elementalType: 1
+  _element: 1
+  _affected: 0
   _name: FireBall
   _description: Throws a FireBall to an Enemy
   _manaCost: 10

@@ -9,7 +9,9 @@ public class Ability : ScriptableObject
 
 
 
-    public Type _elementalType;
+    public Element _element;
+
+    public Type _affected;
 
     public string _name;
     

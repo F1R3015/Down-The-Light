@@ -259,6 +259,38 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1284438696}
+          m_TargetAssemblyTypeName: PlayerBattleController, Assembly-CSharp
+          m_MethodName: AbilityChosen
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 15
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1284438696}
+          m_TargetAssemblyTypeName: PlayerBattleController, Assembly-CSharp
+          m_MethodName: AbilityChosen
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &99952587
 GameObject:
   m_ObjectHideFlags: 0
@@ -1161,6 +1193,38 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1284438696}
+          m_TargetAssemblyTypeName: PlayerBattleController, Assembly-CSharp
+          m_MethodName: AbilityChosen
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 3
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 15
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1284438696}
+          m_TargetAssemblyTypeName: PlayerBattleController, Assembly-CSharp
+          m_MethodName: AbilityChosen
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 3
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &576259664
 GameObject:
   m_ObjectHideFlags: 0
@@ -1961,7 +2025,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1018998590
 Transform:
   m_ObjectHideFlags: 0
@@ -2597,7 +2661,7 @@ GameObject:
   - component: {fileID: 1284438696}
   m_Layer: 0
   m_Name: Homunculus
-  m_TagString: Player
+  m_TagString: Ally
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2723,6 +2787,7 @@ MonoBehaviour:
   _goBackButton: {fileID: 127518421}
   _hpBar: {fileID: 2025755730}
   _manaBar: {fileID: 1247544456}
+  _selectCursor: {fileID: 1773423966}
 --- !u!1 &1294137159
 GameObject:
   m_ObjectHideFlags: 0
@@ -3010,6 +3075,38 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1284438696}
+          m_TargetAssemblyTypeName: PlayerBattleController, Assembly-CSharp
+          m_MethodName: AbilityChosen
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 2
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 15
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1284438696}
+          m_TargetAssemblyTypeName: PlayerBattleController, Assembly-CSharp
+          m_MethodName: AbilityChosen
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 2
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1449877781
 GameObject:
   m_ObjectHideFlags: 0
@@ -3138,6 +3235,38 @@ MonoBehaviour:
         - m_Target: {fileID: 1284438696}
           m_TargetAssemblyTypeName: PlayerBattleController, Assembly-CSharp
           m_MethodName: AbilitySelected
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 4
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1284438696}
+          m_TargetAssemblyTypeName: PlayerBattleController, Assembly-CSharp
+          m_MethodName: AbilityChosen
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 4
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 15
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1284438696}
+          m_TargetAssemblyTypeName: PlayerBattleController, Assembly-CSharp
+          m_MethodName: AbilityChosen
           m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -3593,6 +3722,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1773423966 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 420018298219092286, guid: 8ea2d63dcfc676144bbadc10c844c316, type: 3}
+  m_PrefabInstance: {fileID: 2110229750}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1933049873
 GameObject:
   m_ObjectHideFlags: 0
@@ -3799,7 +3933,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2027325369
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3898,6 +4032,67 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2047978758}
   m_CullTransparentMesh: 1
+--- !u!1001 &2110229750
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 420018298219092286, guid: 8ea2d63dcfc676144bbadc10c844c316, type: 3}
+      propertyPath: m_Name
+      value: SelectTargetCursor
+      objectReference: {fileID: 0}
+    - target: {fileID: 420018298219092286, guid: 8ea2d63dcfc676144bbadc10c844c316, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1881071642126854067, guid: 8ea2d63dcfc676144bbadc10c844c316, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1881071642126854067, guid: 8ea2d63dcfc676144bbadc10c844c316, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1881071642126854067, guid: 8ea2d63dcfc676144bbadc10c844c316, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1881071642126854067, guid: 8ea2d63dcfc676144bbadc10c844c316, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1881071642126854067, guid: 8ea2d63dcfc676144bbadc10c844c316, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1881071642126854067, guid: 8ea2d63dcfc676144bbadc10c844c316, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1881071642126854067, guid: 8ea2d63dcfc676144bbadc10c844c316, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1881071642126854067, guid: 8ea2d63dcfc676144bbadc10c844c316, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1881071642126854067, guid: 8ea2d63dcfc676144bbadc10c844c316, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1881071642126854067, guid: 8ea2d63dcfc676144bbadc10c844c316, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8ea2d63dcfc676144bbadc10c844c316, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -3915,3 +4110,4 @@ SceneRoots:
   - {fileID: 1938815943}
   - {fileID: 1037347077}
   - {fileID: 304109900}
+  - {fileID: 2110229750}

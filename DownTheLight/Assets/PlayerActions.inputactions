@@ -206,8 +206,30 @@
                 },
                 {
                     "name": "",
+                    "id": "a82d4e97-5c9e-4ffa-b150-0ea65d6bbeb3",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "4dc3aa11-57cc-4b20-932a-93f11ffd52ff",
                     "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Object",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b8e061fd-6195-41a7-b899-1de0f98839c9",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -228,12 +250,12 @@
                 },
                 {
                     "name": "",
-                    "id": "ed1dfc04-d597-4ab9-964c-9f75fd93541e",
-                    "path": "<Keyboard>/c",
+                    "id": "8cc8d8cb-1767-4fe6-a5cc-42a4e3b13c86",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "GoBack",
+                    "action": "Flee",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -245,6 +267,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "Alchemy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "51c5a7e4-1132-45b3-a591-5ad6ffdea6cd",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Alchemy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ed1dfc04-d597-4ab9-964c-9f75fd93541e",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GoBack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fd3005dd-0908-4c27-ae27-90d1c98449a6",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "GoBack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
