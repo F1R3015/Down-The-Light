@@ -808,7 +808,7 @@ MonoBehaviour:
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
+  m_DefaultActionMap: Battle
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!4 &384402529
@@ -2589,7 +2589,7 @@ MonoBehaviour:
   _goBackButton: {fileID: 127518421}
   _hpBar: {fileID: 2025755730}
   _manaBar: {fileID: 1247544456}
-  _selectTarget: {fileID: 0}
+  _selectedAbility: 0
 --- !u!1 &1294137159
 GameObject:
   m_ObjectHideFlags: 0
