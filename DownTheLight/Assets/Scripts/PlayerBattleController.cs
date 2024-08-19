@@ -7,12 +7,12 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public enum PlayerTurnState
+public enum BattleTurnState
 {
-    SelectAction, SelectAbility, SelectObject, SelectTarget, WaitingTurn, WaitingAttack
+    SelectAction, SelectAbility, SelectObject, SelectTargetEnemy, WaitingTurn, WaitingAttack
 }
 
-public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTEM TO FUNCTION LIKE ACTION SYSTEM -> USE THE AOFA BUTTONS AND NOT UI 
+public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTEM TO FUNCTION LIKE ACTION SYSTEM -> USE THE AOFA BUTTONS AND NOT UI 
 {
     #region Input Actions
     PlayerAction _inputAction;
@@ -20,16 +20,23 @@ public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
     InputAction _objectAction;
     InputAction _fleeAction;
     InputAction _alchemyAction;
-    InputAction _goBackAction;
+    InputAction _cancelAction;
+    InputAction _acceptAction;
+    InputAction _leftAction;
+    InputAction _rightAction;
     #endregion
 
     #region Serialized Propierties
 
     [Header("Battle Buttons")]
+
+    [SerializeField]
+    private GameObject _battleButtons;
+
     [SerializeField]
     private GameObject _attackButton;
 
-    [SerializeField] 
+    [SerializeField]
     private GameObject _objectButton;
 
     [SerializeField]
@@ -49,11 +56,11 @@ public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
 
     [Header("Abilities UI")]
     [SerializeField]
-    private GameObject _abilityUI1;   
+    private GameObject _abilityUI1;
     [SerializeField]
-    private GameObject _abilityUI2;    
+    private GameObject _abilityUI2;
     [SerializeField]
-    private GameObject _abilityUI3;    
+    private GameObject _abilityUI3;
     [SerializeField]
     private GameObject _abilityUI4;
     [SerializeField]
@@ -68,9 +75,6 @@ public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
     [SerializeField]
     private GameObject _manaBar;
 
-    [SerializeField]
-    private GameObject _selectCursor;
-
 
 
     #endregion
@@ -78,103 +82,214 @@ public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
     #region Propierties
     private GameObject[] _enemies;
     private GameObject[] _allies;
+    [SerializeField] private int _selectedAbility;
     private Ability _chosenAbility;
-    private GameObject _selectTarget;
-    public GameObject SelectTarget
+    private int _selectTarget;
+    public int SelectTarget
     {
         get { return _selectTarget; }
         set {
+            if (_selectTarget != -1)
+            {
+                _enemies[_selectTarget].transform.GetChild(0).gameObject.SetActive(false);
+                _enemies[_selectTarget].transform.GetChild(1).gameObject.SetActive(false);
+                
+            }
             _selectTarget = value;
+            if (_selectTarget != -1)
+            {
+                _enemies[_selectTarget].transform.GetChild(0).gameObject.SetActive(true);
+                _enemies[_selectTarget].transform.GetChild(1).gameObject.SetActive(true);
+
+            }
         }
     }
-    private PlayerTurnState _turnState;
+    private BattleTurnState _turnState;
+    private BattleTurnState _previousTurn;
+
 
     #endregion
 
     private void Awake()
     {
         _inputAction = new PlayerAction();
-        _attackAction = _inputAction.Player.Attack;
-        _objectAction = _inputAction.Player.Object;
-        _fleeAction = _inputAction.Player.Flee;
-        _alchemyAction = _inputAction.Player.Alchemy;
-        _goBackAction = _inputAction.Player.GoBack;
+        _attackAction = _inputAction.Battle.Attack;
+        _objectAction = _inputAction.Battle.Object;
+        _fleeAction = _inputAction.Battle.Flee;
+        _alchemyAction = _inputAction.Battle.Alchemy;
+        _cancelAction = _inputAction.Battle.Cancel;
+        _acceptAction = _inputAction.Battle.Accept;
+        _leftAction = _inputAction.Battle.Left;
+        _rightAction = _inputAction.Battle.Right;
         _abilityUI1.GetComponentInChildren<Text>().text = _creature._ability1.name; // Create function that checks if ability then name else blank ( could be other image better? ) 
         _enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        _enemies = SortEntitiesByPosition(_enemies);
+        _enemies = SortEntitiesByXPosition(_enemies);
         _allies = GameObject.FindGameObjectsWithTag("Ally");
-        _allies = SortEntitiesByPosition(_allies);
+        _allies = SortEntitiesByXPosition(_allies);
         _chosenAbility = null;
         //Delete when turns system completed ( The Battle Manager will be the one doing it) 
 
-        _turnState = PlayerTurnState.SelectAction; // Should be Waiting when turn system completed
+        _turnState = BattleTurnState.SelectAction; // Should be Waiting when turn system completed and using EnterNewState()
+
         AOFAEnable();
+        AcceptEnable();
 
     }
 
     // CHANGE AOFA AND ACTIONS TO BE LESS CONFUSING ??? ( NEW FUNCTIONS WITH CLEARER INTENTIONS )
 
-    #region AOFA functions
+    #region Action Button Functions
 
     private void Attack(InputAction.CallbackContext context)
     {
-
+        
         switch (_turnState)
         {
-            case PlayerTurnState.SelectAction:
-                AOFADisable();
+            case BattleTurnState.SelectAction: // CHANGE WITH CANCEL AND ACCEPT
                 _abilityMenu.SetActive(true);
+                _battleButtons.SetActive(false);
                 _goBackButton.SetActive(true);
-                EventSystem.current.SetSelectedGameObject(_abilityUI1); // Remember to add this when exiting attack menu
-                _goBackAction.Enable();
-                _goBackAction.performed += EnableAOFA;
+                _cancelAction.Enable();
+                _cancelAction.performed += Cancel;
+                _previousTurn = _turnState;
+                _turnState = BattleTurnState.SelectAbility;
+
+                break;
+            case BattleTurnState.SelectAbility:
                 AbilitySelected(1);
                 break;
             default:
                 break;
         }
         
-    } // A
+    } // A (XBOX) SQUARE (PLAY) B (NINTENDO)
 
     private void Object(InputAction.CallbackContext context)
     {
         switch (_turnState)
         {
-            case PlayerTurnState.SelectAction:
+            case BattleTurnState.SelectAction:
                 AOFADisable();
+                break;
+            case BattleTurnState.SelectAbility:
+                AbilitySelected(2);
                 break;
             default:
                 break;
         }
-    } // X
+    } // X (XBOX) CUBE (PLAY) Y (NINTENDO)
 
     private void Flee(InputAction.CallbackContext context)
     {
         switch (_turnState)
         {
-            case PlayerTurnState.SelectAction:
+            case BattleTurnState.SelectAction:
                 AOFADisable();
+                break;
+            case BattleTurnState.SelectAbility:
+                AbilitySelected(3);
                 break;
             default:
                 break;
         }
-    } // B
+    } // B (XBOX) CIRCLE (PLAY) A (NINTENDO)
 
     private void Alchemy(InputAction.CallbackContext context)
     {
         switch (_turnState)
         {
-            case PlayerTurnState.SelectAction:
+            case BattleTurnState.SelectAction:
                 AOFADisable();
+                break;
+            case BattleTurnState.SelectAbility:
+                AbilitySelected(4);
                 break;
             default:
                 break;
         }
-    } // Y
+    } // Y (XBOX) TRIANGLE (PLAY) X (NINTENDO)
+
+    private void Accept(InputAction.CallbackContext context) // RB (XBOX) R1 (PLAY) R (NINTENDO)
+    {
+        switch (_turnState)
+        {
+            case BattleTurnState.SelectAbility:
+                AbilityChosen(_selectedAbility);
+                _previousTurn = _turnState;
+                _rightAction.Enable();
+                _leftAction.Enable();
+                _leftAction.performed += Left;
+                _rightAction.performed += Right;
+                _turnState = BattleTurnState.SelectTargetEnemy; // Change to a different state due to the ability
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    private void Cancel(InputAction.CallbackContext context) // LB (XBOX) L1 (PLAY) L (NINTENDO)
+    {
+        switch (_turnState)
+        {
+            case BattleTurnState.SelectAbility:
+                _abilityMenu.SetActive(false);
+                _battleButtons.SetActive(true);
+                _goBackButton.SetActive(false);
+                _cancelAction.Disable();
+                _cancelAction.performed -= Cancel;
+                _turnState = BattleTurnState.SelectAction;
+                _previousTurn = _turnState;
+                break;
+            case BattleTurnState.SelectTargetEnemy:
+                SelectTarget = -1;
+                _rightAction.Disable();
+                _leftAction.Disable();
+                _leftAction.performed -= Left;
+                _rightAction.performed -= Right;
+                switch (_previousTurn)
+                {
+                    case BattleTurnState.SelectAbility:
+                        _abilityMenu.SetActive(true);
+                        _turnState = _previousTurn;
+                        _previousTurn = BattleTurnState.SelectAction;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void Left(InputAction.CallbackContext context)
+    {
+        switch (_turnState)
+        {
+            case BattleTurnState.SelectTargetEnemy:
+                SelectTarget = _selectTarget == 0 ? _enemies.Length - 1 : _selectTarget - 1;
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void Right(InputAction.CallbackContext context)
+    {
+        switch (_turnState)
+        {
+            case BattleTurnState.SelectTargetEnemy:
+                SelectTarget = _selectTarget == _enemies.Length - 1  ? 0 : _selectTarget + 1;
+                break;
+            default:
+                break;
+        }
+    }
 
     #endregion
 
-    #region Enable and disable AOFA
+    #region Enable and disable AOFA (Maybe separate for each button?)
     private void AOFAEnable()
     {
 
@@ -221,15 +336,27 @@ public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
         
 
     }
+
+    private void AcceptEnable()
+    {
+        _acceptAction.Enable();
+        _acceptAction.performed += Accept;
+    }
+
+    private void AcceptDisable()
+    {
+        _acceptAction.Disable();
+        _acceptAction.performed -= Accept;
+    }
     #endregion
 
-    #region Enable and disable actions
+    #region Enable and disable actions ( Change this later ) 
     public void EnableAOFA(InputAction.CallbackContext context)
     {
         _abilityMenu.SetActive(false);
         _goBackButton.SetActive(false);
-        _goBackAction.Disable();
-        _goBackAction.performed -= EnableAOFA;
+        _cancelAction.Disable();
+        _cancelAction.performed -= EnableAOFA;
         AOFAEnable();
         
     }
@@ -249,18 +376,22 @@ public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
             case 1:
                  _description = _creature._ability1.IsUnityNull() ? "" : _creature._ability1._description;
                 _abilityDescriptionUI.GetComponentInChildren<Text>().text = _description;
+                _selectedAbility = 1;
                 break;
             case 2:
                  _description = _creature._ability2.IsUnityNull() ? "" : _creature._ability2._description;
                 _abilityDescriptionUI.GetComponentInChildren<Text>().text = _description;
+                _selectedAbility = 2;
                 break;
             case 3:
                  _description = _creature._ability3.IsUnityNull() ? "" : _creature._ability3._description;
                 _abilityDescriptionUI.GetComponentInChildren<Text>().text = _description;
+                _selectedAbility = 3;
                 break;
             case 4:
                  _description = _creature._ability4.IsUnityNull() ? "" : _creature._ability4._description;
                 _abilityDescriptionUI.GetComponentInChildren<Text>().text = _description;
+                _selectedAbility = 4;
                 break;
         }
     }
@@ -305,6 +436,9 @@ public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
 
                 }
                 break;
+            default:
+                Debug.Log("NO ABILITY CHOSED");
+                break;
         }
     }
 
@@ -315,16 +449,15 @@ public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
         switch (_type)
         {
             case Type.Enemy:
-                SelectTarget = _enemies[0];
-                _selectCursor.SetActive(true); // make function for this ??? 
-                _selectCursor.transform.position = SelectTarget.transform.position + Vector3.up * 2; // CHANGE SO IT KNOWS SPRITE HEIGHT AND GO A LITTLE UP OF IT
+                SelectTarget = 0;
+                // Enable the select cursor and health bar
                 break;
 
             case Type.AllEnemies:
                 break;
 
             case Type.Ally:
-                _selectTarget = _allies[0];
+                _selectTarget = 0;
                 break;
 
             case Type.AllAllies:
@@ -333,7 +466,7 @@ public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
     }
 
     // Method for sorting an array of gameobjects by their x position
-    private GameObject[] SortEntitiesByPosition(GameObject[] _entitiesArray)
+    private GameObject[] SortEntitiesByXPosition(GameObject[] _entitiesArray)
     {
         if(_entitiesArray.Length <= 1)
         {
@@ -356,9 +489,9 @@ public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
         }
 
         GameObject[] _lowerPositionArray = _lowerPosition.ToArray();
-        _lowerPositionArray = SortEntitiesByPosition(_lowerPosition.ToArray());
+        _lowerPositionArray = SortEntitiesByXPosition(_lowerPosition.ToArray());
         GameObject[] _higherPositionArray = _higherPosition.ToArray();
-        _higherPositionArray = SortEntitiesByPosition(_higherPosition.ToArray());
+        _higherPositionArray = SortEntitiesByXPosition(_higherPosition.ToArray());
 
 
         var _returnArray =  new GameObject[_lowerPositionArray.Length + _higherPositionArray.Length + 1];
