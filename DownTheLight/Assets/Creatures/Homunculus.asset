@@ -16,8 +16,8 @@ MonoBehaviour:
   _maximumHealth: 10
   _mana: 20
   _maxMana: 20
-  _primaryType: 6
-  _secondaryType: 0
+  _primaryElement: 6
+  _secondaryElement: 0
   _strength: 5
   _baseStrength: 5
   _defence: 6
@@ -27,6 +27,6 @@ MonoBehaviour:
   _accuracy: 5
   _baseAccuracy: 5
   _ability1: {fileID: 11400000, guid: a1fbaaf4074c28e4487c75a49047c853, type: 2}
-  _ability2: {fileID: 0}
-  _ability3: {fileID: 0}
-  _ability4: {fileID: 0}
+  _ability2: {fileID: 11400000, guid: 338acc0645a86c447aad2125d7faf2b9, type: 2}
+  _ability3: {fileID: 11400000, guid: 9127554d3df96f04cbdfb1786cb34ed4, type: 2}
+  _ability4: {fileID: 11400000, guid: d10ceb66989143a4389b00a0c5a85bf5, type: 2}

@@ -14,9 +14,9 @@ public class Creature : ScriptableObject
 
     public int _maxMana ;
 
-    public Type _primaryType ;
+    public Element _primaryElement ;
 
-    public Type _secondaryType ;
+    public Element _secondaryElement ;
 
     public int _strength ;
 

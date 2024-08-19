@@ -9,9 +9,9 @@ using UnityEngine.UI;
 
 public enum BattleTurnState
 {
-    SelectAction, SelectAbility, SelectObject, SelectTargetEnemy, WaitingTurn, WaitingAttack
+    SelectAction, SelectAbility, SelectObject, SelectTarget, WaitingTurn, WaitingAttack
 }
-
+// NOTE: SHOULD ADD NUMBERS TO HEALTH AND MANA CANVAS
 public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTEM TO FUNCTION LIKE ACTION SYSTEM -> USE THE AOFA BUTTONS AND NOT UI 
 {
     #region Input Actions
@@ -81,25 +81,44 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
 
     #region Propierties
     private GameObject[] _enemies;
-    private GameObject[] _allies;
-    [SerializeField] private int _selectedAbility;
+    [SerializeField] private GameObject[] _allies;
+    private int _selectedAbility;
     private Ability _chosenAbility;
-    private int _selectTarget;
+    private Type _targetType;
+    private int _selectTarget; // Indicates position in the array of the target / -1 if there is no target
     public int SelectTarget
     {
         get { return _selectTarget; }
         set {
             if (_selectTarget != -1)
             {
-                _enemies[_selectTarget].transform.GetChild(0).gameObject.SetActive(false);
-                _enemies[_selectTarget].transform.GetChild(1).gameObject.SetActive(false);
+                switch (_targetType)
+                {
+                    case Type.Enemy:
+                        _enemies[_selectTarget].transform.GetChild(0).gameObject.SetActive(false);
+                        _enemies[_selectTarget].transform.GetChild(1).gameObject.SetActive(false);
+                        break;
+                    case Type.Ally:
+                        _allies[_selectTarget].transform.GetChild(0).gameObject.SetActive(false); 
+                        _allies[_selectTarget].transform.GetChild(1).gameObject.SetActive(false);// DELETE / ALLIES WILL HAVE A SPECIAL PLACE FOR DISPLAYING HEALTH AND MANA
+                        break;
+                }
                 
             }
             _selectTarget = value;
             if (_selectTarget != -1)
             {
-                _enemies[_selectTarget].transform.GetChild(0).gameObject.SetActive(true);
-                _enemies[_selectTarget].transform.GetChild(1).gameObject.SetActive(true);
+                switch (_targetType)
+                {
+                    case Type.Enemy:
+                        _enemies[_selectTarget].transform.GetChild(0).gameObject.SetActive(true);
+                        _enemies[_selectTarget].transform.GetChild(1).gameObject.SetActive(true);
+                        break;
+                    case Type.Ally:
+                        _allies[_selectTarget].transform.GetChild(0).gameObject.SetActive(true);
+                        _allies[_selectTarget].transform.GetChild(1).gameObject.SetActive(true);
+                        break;
+                }
 
             }
         }
@@ -121,7 +140,10 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
         _acceptAction = _inputAction.Battle.Accept;
         _leftAction = _inputAction.Battle.Left;
         _rightAction = _inputAction.Battle.Right;
-        _abilityUI1.GetComponentInChildren<Text>().text = _creature._ability1.name; // Create function that checks if ability then name else blank ( could be other image better? ) 
+        _abilityUI1.GetComponentInChildren<Text>().text = !_creature._ability1.IsUnityNull() ? _creature._ability1.name : ""; 
+        _abilityUI2.GetComponentInChildren<Text>().text = !_creature._ability2.IsUnityNull() ? _creature._ability2.name : ""; 
+        _abilityUI3.GetComponentInChildren<Text>().text = !_creature._ability3.IsUnityNull() ? _creature._ability3.name : ""; 
+        _abilityUI4.GetComponentInChildren<Text>().text = !_creature._ability4.IsUnityNull() ? _creature._ability4.name : ""; 
         _enemies = GameObject.FindGameObjectsWithTag("Enemy");
         _enemies = SortEntitiesByXPosition(_enemies);
         _allies = GameObject.FindGameObjectsWithTag("Ally");
@@ -215,12 +237,6 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
         {
             case BattleTurnState.SelectAbility:
                 AbilityChosen(_selectedAbility);
-                _previousTurn = _turnState;
-                _rightAction.Enable();
-                _leftAction.Enable();
-                _leftAction.performed += Left;
-                _rightAction.performed += Right;
-                _turnState = BattleTurnState.SelectTargetEnemy; // Change to a different state due to the ability
                 break;
             default:
                 break;
@@ -240,23 +256,53 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
                 _cancelAction.performed -= Cancel;
                 _turnState = BattleTurnState.SelectAction;
                 _previousTurn = _turnState;
+                _selectedAbility = -1;
                 break;
-            case BattleTurnState.SelectTargetEnemy:
-                SelectTarget = -1;
-                _rightAction.Disable();
-                _leftAction.Disable();
-                _leftAction.performed -= Left;
-                _rightAction.performed -= Right;
+            case BattleTurnState.SelectTarget:
+                switch (_targetType) // Part 1 : Disable enemies or allies
+                {
+                    case Type.Enemy:
+                    case Type.Ally:
+                        SelectTarget = -1;
+                        _rightAction.Disable();
+                        _leftAction.Disable();
+                        _leftAction.performed -= Left;
+                        _rightAction.performed -= Right;
+                        break;
+
+                    case Type.AllEnemies:
+                        foreach(GameObject _currentGO in _enemies)
+                        {
+                            _currentGO.transform.GetChild(0).gameObject.SetActive(false);
+                            _currentGO.transform.GetChild(1).gameObject.SetActive(false);
+                        }
+                        break;
+                    case Type.AllAllies:
+                        foreach (GameObject _currentGO in _enemies)
+                        {
+                            _currentGO.transform.GetChild(0).gameObject.SetActive(false);
+                            _currentGO.transform.GetChild(1).gameObject.SetActive(false); // DELETE WHEN ALLIES HAVE SPECIAL PLACE IN UI
+                        }
+                        break;
+                    default:
+                        Debug.Log("ERROR: TYPE ERROR WHEN CANCELING TARGET");
+                        break;
+                }
+
+
+
+                
                 switch (_previousTurn)
                 {
                     case BattleTurnState.SelectAbility:
                         _abilityMenu.SetActive(true);
                         _turnState = _previousTurn;
                         _previousTurn = BattleTurnState.SelectAction;
+                        _chosenAbility = null;
                         break;
                     default:
                         break;
-                }
+                } // Part 2: Go back
                 break;
             default:
                 break;
@@ -267,8 +313,18 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
     {
         switch (_turnState)
         {
-            case BattleTurnState.SelectTargetEnemy:
-                SelectTarget = _selectTarget == 0 ? _enemies.Length - 1 : _selectTarget - 1;
+            case BattleTurnState.SelectTarget:
+                switch (_chosenAbility._affected)
+                {
+                    case Type.Enemy:
+                        SelectTarget = _selectTarget == 0 ? _enemies.Length - 1 : _selectTarget - 1;
+                        break;
+                    case Type.Ally:
+                        SelectTarget = _selectTarget == 0 ? _allies.Length - 1 : _selectTarget - 1;
+                        break;
+                    default:
+                        break;
+                }
                 break;
             default:
                 break;
@@ -279,8 +335,18 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
     {
         switch (_turnState)
         {
-            case BattleTurnState.SelectTargetEnemy:
-                SelectTarget = _selectTarget == _enemies.Length - 1  ? 0 : _selectTarget + 1;
+            case BattleTurnState.SelectTarget:
+                switch (_chosenAbility._affected)
+                {
+                    case Type.Enemy:
+                        SelectTarget = _selectTarget == _enemies.Length - 1 ? 0 : _selectTarget + 1;
+                        break;
+                    case Type.Ally:
+                        SelectTarget = _selectTarget == _allies.Length - 1 ? 0 : _selectTarget + 1;
+                        break;
+                    default:
+                        break;
+                }
                 break;
             default:
                 break;
@@ -367,7 +433,7 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
     }
     #endregion
 
-    //Switch ability description when ability selected or mouse enter
+    #region Ability Selection
     public void AbilitySelected(int _ability)
     {
         string _description;
@@ -442,25 +508,54 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
         }
     }
 
-
+    #endregion
     // When an abilty or object is used, decides what is targeted based on the type
     private void TargetSelectSwitch(Type _type)
     {
         switch (_type)
         {
             case Type.Enemy:
+                _targetType = Type.Enemy;
                 SelectTarget = 0;
-                // Enable the select cursor and health bar
+                _previousTurn = _turnState;
+                _rightAction.Enable();
+                _leftAction.Enable();
+                _leftAction.performed += Left;
+                _rightAction.performed += Right;
+                _turnState = BattleTurnState.SelectTarget; // Change to a different state due to the ability
                 break;
 
             case Type.AllEnemies:
+                _targetType = Type.AllEnemies;
+                _previousTurn = _turnState;
+                _turnState = BattleTurnState.SelectTarget;
+                foreach (GameObject _currentGO in _enemies)
+                {
+                    _currentGO.transform.GetChild(0).gameObject.SetActive(true);
+                    _currentGO.transform.GetChild(1).gameObject.SetActive(true);
+                }
                 break;
 
             case Type.Ally:
-                _selectTarget = 0;
+                _targetType = Type.Ally;
+                SelectTarget = 0;
+                _previousTurn = _turnState;
+                _rightAction.Enable();
+                _leftAction.Enable();
+                _leftAction.performed += Left;
+                _rightAction.performed += Right;
+                _turnState = BattleTurnState.SelectTarget; // Change to a different state due to the ability
                 break;
 
             case Type.AllAllies:
+                _targetType = Type.AllAllies;
+                _previousTurn = _turnState;
+                _turnState = BattleTurnState.SelectTarget;
+                foreach (GameObject _currentGO in _allies)
+                {
+                    _currentGO.transform.GetChild(0).gameObject.SetActive(true);
+                    _currentGO.transform.GetChild(1).gameObject.SetActive(true); // DELETE WHEN ALLIES HAVE SPECIAL PLACE IN UI
+                }
                 break;
         }
     }
@@ -500,6 +595,8 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
         _higherPositionArray.CopyTo(_returnArray, _lowerPositionArray.Length + 1);
         return _returnArray;
     }
+    
+    
     
 }
 
