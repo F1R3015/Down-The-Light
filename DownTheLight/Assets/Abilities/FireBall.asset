@@ -17,7 +17,7 @@ MonoBehaviour:
   _name: FireBall
   _description: Throws a FireBall to an Enemy
   _manaCost: 4
-  _damagePoint: 2
+  _damagePoint: 20
   _selfDamagePoint: 0
   _healPoint: 0
   _strengthPoint: 0

@@ -26,7 +26,7 @@ public class CreatureStats : MonoBehaviour
 
     public int _baseDefence;
 
-    public int _speed;
+    public int _speed; // Affects dodges and the time needed for recovering the turn
 
     public int _baseSpeed;
 
@@ -47,6 +47,7 @@ public class CreatureStats : MonoBehaviour
     public GameObject _manaBar;
     [SerializeField]
     private Creature _creatureBlueprint;
+    private BattleSystem _battleSystem;
     #region Functions
     public void ChangeHealth(int _healthAlter)
     {
@@ -171,9 +172,14 @@ public class CreatureStats : MonoBehaviour
     private void Awake  ()
     {
         InitializeStats();
+        _battleSystem = GameObject.FindGameObjectWithTag("BattleSystem").GetComponent<BattleSystem>();
     }
 
-
+    public IEnumerator WaitForNextTurn()
+    {
+        yield return new WaitForSeconds(10-_speed); // Wait Time should be less based in the speed / Note: Temporal is 10-_speed, should be changed in future
+        _battleSystem.TurnReady(this.gameObject);
+    }
 
 
 

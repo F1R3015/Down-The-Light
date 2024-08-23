@@ -257,7 +257,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6476197885889663226}
   - component: {fileID: 1785324496342920649}
-  - component: {fileID: 791771570443167060}
   - component: {fileID: 3976007152368229819}
   m_Layer: 0
   m_Name: Homunculus
@@ -311,31 +310,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &791771570443167060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2712582525491087751}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef56da16242bf184abf657642c1434bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _battleButtons: {fileID: 0}
-  _attackButton: {fileID: 0}
-  _objectButton: {fileID: 0}
-  _fleeButton: {fileID: 0}
-  _alchemyButton: {fileID: 0}
-  _abilityMenu: {fileID: 0}
-  _creature: {fileID: 3976007152368229819}
-  _abilityUI1: {fileID: 0}
-  _abilityUI2: {fileID: 0}
-  _abilityUI3: {fileID: 0}
-  _abilityUI4: {fileID: 0}
-  _abilityDescriptionUI: {fileID: 0}
-  _goBackButton: {fileID: 0}
 --- !u!114 &3976007152368229819
 MonoBehaviour:
   m_ObjectHideFlags: 0

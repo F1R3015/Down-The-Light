@@ -52,7 +52,7 @@ public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
 
     [Header("Current Creature")]
     [SerializeField]
-    private CreatureStats _creature; // Should be changed by the BattleSystem and not in the inspector
+    private CreatureStats _creature; 
 
     [Header("Abilities UI")]
     [SerializeField]
@@ -134,10 +134,6 @@ public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
         _acceptAction = _inputAction.Battle.Accept;
         _leftAction = _inputAction.Battle.Left;
         _rightAction = _inputAction.Battle.Right;
-        _abilityUI1.GetComponentInChildren<Text>().text = !_creature._ability1.IsUnityNull() ? _creature._ability1.name : ""; 
-        _abilityUI2.GetComponentInChildren<Text>().text = !_creature._ability2.IsUnityNull() ? _creature._ability2.name : ""; 
-        _abilityUI3.GetComponentInChildren<Text>().text = !_creature._ability3.IsUnityNull() ? _creature._ability3.name : ""; 
-        _abilityUI4.GetComponentInChildren<Text>().text = !_creature._ability4.IsUnityNull() ? _creature._ability4.name : ""; 
         _enemies = GameObject.FindGameObjectsWithTag("Enemy");
         _enemies = SortEntitiesByXPosition(_enemies);
         _allies = GameObject.FindGameObjectsWithTag("Ally");
@@ -156,6 +152,10 @@ public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
         switch (_turnState)
         {
             case BattleTurnState.SelectAction: // CHANGE WITH CANCEL AND ACCEPT
+                _abilityUI1.GetComponentInChildren<Text>().text = !_creature._ability1.IsUnityNull() ? _creature._ability1.name : "";
+                _abilityUI2.GetComponentInChildren<Text>().text = !_creature._ability2.IsUnityNull() ? _creature._ability2.name : "";
+                _abilityUI3.GetComponentInChildren<Text>().text = !_creature._ability3.IsUnityNull() ? _creature._ability3.name : "";
+                _abilityUI4.GetComponentInChildren<Text>().text = !_creature._ability4.IsUnityNull() ? _creature._ability4.name : "";
                 _abilityMenu.SetActive(true);
                 _battleButtons.SetActive(false);
                 _goBackButton.SetActive(true);
@@ -233,12 +233,12 @@ public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
                     case Type.Enemy:
                         _enemies[_selectTarget].transform.GetChild(0).gameObject.SetActive(false);
                         DoAction(_enemies[_selectTarget]); // Note:  Call  coroutine better for animation + waiting 
-                        _enemies[_selectTarget].transform.GetChild(1).gameObject.SetActive(false);
+                        
                         break;
                     case Type.Ally:
                         _allies[_selectTarget].transform.GetChild(0).gameObject.SetActive(false);
                         DoAction(_allies[_selectTarget]); // Note:  Call  coroutine better for animation + waiting 
-                        _enemies[_selectTarget].transform.GetChild(1).gameObject.SetActive(false);
+                        _allies[_selectTarget].transform.GetChild(1).gameObject.SetActive(false);
                         break;
                     case Type.AllEnemies:
                         foreach(GameObject _enemy in _enemies)
@@ -475,12 +475,15 @@ public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
         CancelDisable();
         RightDisable();
         LeftDisable();
+        StartCoroutine(_creature.WaitForNextTurn());
+        _creature = null;
         _battleSystem.PlayerTurnFinished();
     }
 
-    public void StartTurn()
+    public void StartTurn(CreatureStats _currentCreature)
     {
-        _turnState = BattleTurnState.SelectAction; // Should be Waiting when turn system completed and using EnterNewState()
+        _creature = _currentCreature;
+        _turnState = BattleTurnState.SelectAction; 
         _battleButtons.SetActive(true);
         AOFAEnable();
         AcceptEnable();
@@ -667,7 +670,13 @@ public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
             if(_targetCreature._health <= 0)
             {
                 _target.SetActive(false); // Note:  Should do it the gameObject itself
-                _enemies = _enemies.Where(val => val != _target).ToArray(); // Alternatly, if enemies could die without player attack then they should disable and be ignored
+                _battleSystem._turns.Remove(_target);
+                _enemies = _enemies.Where(val => val != _target).ToArray(); 
+                _battleSystem._enemies = _enemies;
+            }
+            else
+            {
+                _enemies[_selectTarget].transform.GetChild(1).gameObject.SetActive(false);
             }
             Debug.Log($"{_targetCreature._health}/{_targetCreature._maximumHealth}");
         }
@@ -699,7 +708,7 @@ public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
         {
             _targetCreature.ChangeStrength( _ability._strengthPoint);
         }
-    } // Note: Should also apply the player stats and  status effects ( last one not really necessary? ) 
+    } // Note: Should also apply the player stats and  status effects ( last one not really necessary? ) and elements
     //Note : Two Differents Objects Types : Combat and Non-Combat
 
 }
