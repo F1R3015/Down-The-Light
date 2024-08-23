@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public enum BattleTurnState
 {
-    SelectAction, SelectAbility, SelectObject, SelectTarget, WaitingTurn, WaitingAttack
+    SelectAction, SelectAbility, SelectObject, SelectTarget, Waiting
 }
 // NOTE: SHOULD ADD NUMBERS TO HEALTH AND MANA CANVAS
 public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTEM TO FUNCTION LIKE ACTION SYSTEM -> USE THE AOFA BUTTONS AND NOT UI 
@@ -52,7 +52,7 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
 
     [Header("Current Creature")]
     [SerializeField]
-    private Creature _creature; // Should be changed by the BattleSystem and not in the inspector
+    private CreatureStats _creature; // Should be changed by the BattleSystem and not in the inspector
 
     [Header("Abilities UI")]
     [SerializeField]
@@ -68,12 +68,6 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
     [SerializeField]
     private GameObject _goBackButton;
 
-    [Header("Bars")]
-    [SerializeField]
-    private GameObject _hpBar;
-
-    [SerializeField]
-    private GameObject _manaBar;
 
 
 
@@ -81,7 +75,7 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
 
     #region Propierties
     private GameObject[] _enemies;
-    [SerializeField] private GameObject[] _allies;
+    private GameObject[] _allies;
     private int _selectedAbility;
     private Ability _chosenAbility;
     private Type _targetType;
@@ -149,6 +143,7 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
         _allies = GameObject.FindGameObjectsWithTag("Ally");
         _allies = SortEntitiesByXPosition(_allies);
         _chosenAbility = null;
+
         //Delete when turns system completed ( The Battle Manager will be the one doing it) 
 
         _turnState = BattleTurnState.SelectAction; // Should be Waiting when turn system completed and using EnterNewState()
@@ -158,7 +153,7 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
 
     }
 
-    // CHANGE AOFA AND ACTIONS TO BE LESS CONFUSING ??? ( NEW FUNCTIONS WITH CLEARER INTENTIONS )
+    
 
     #region Action Button Functions
 
@@ -238,6 +233,44 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
             case BattleTurnState.SelectAbility:
                 AbilityChosen(_selectedAbility);
                 break;
+            case BattleTurnState.SelectTarget:
+                AllDisable();
+                _goBackButton.SetActive(false);
+                switch (_targetType)
+                {
+                    case Type.Enemy:
+                        _enemies[_selectTarget].transform.GetChild(0).gameObject.SetActive(false);
+                        DoAction(_enemies[_selectTarget]); // Note:  Call  coroutine better for animation + waiting ?
+                        break;
+                    case Type.Ally:
+                        _allies[_selectTarget].transform.GetChild(0).gameObject.SetActive(false);
+                        DoAction(_allies[_selectTarget]); // Note:  Call  coroutine better for animation + waiting ? 
+                        break;
+                    case Type.AllEnemies:
+                        foreach(GameObject _enemy in _enemies)
+                        {
+                            _enemy.transform.GetChild(0).gameObject.SetActive(false);
+                            DoAction(_enemy); // Note:  Call  coroutine better for animation + waiting ? 
+                        }
+                        break;
+                    case Type.AllAllies:
+                        foreach(GameObject _ally in _allies)
+                        {
+                            _ally.transform.GetChild(0).gameObject.SetActive(false);
+                            DoAction(_ally); // Note:  Call  coroutine better for animation + waiting ? 
+                        }
+
+                        break;
+                }
+                // Set null all not necesary things -->
+                _turnState = BattleTurnState.Waiting;
+                _previousTurn = BattleTurnState.Waiting;
+                _selectedAbility = -1;
+                _chosenAbility = null;
+                _targetType = Type.None;
+                SelectTarget = -1;
+                break;
+                // <--
             default:
                 break;
         }
@@ -414,24 +447,34 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
         _acceptAction.Disable();
         _acceptAction.performed -= Accept;
     }
-    #endregion
 
-    #region Enable and disable actions ( Change this later ) 
-    public void EnableAOFA(InputAction.CallbackContext context)
+    private void CancelDisable()
     {
-        _abilityMenu.SetActive(false);
-        _goBackButton.SetActive(false);
         _cancelAction.Disable();
-        _cancelAction.performed -= EnableAOFA;
-        AOFAEnable();
-        
+        _cancelAction.performed -= Cancel;
+    }
+    private void RightDisable()
+    {
+        _rightAction.Disable();
+        _rightAction.performed -= Right;
+    }
+    private void LeftDisable()
+    {
+        _leftAction.Disable();
+        _leftAction.performed -= Left;
     }
 
-    public void DisableAOFA(InputAction.CallbackContext context)
+    private void AllDisable()
     {
         AOFADisable();
+        AcceptDisable();
+        CancelDisable();
+        RightDisable();
+        LeftDisable();
     }
     #endregion
+
+    
 
     #region Ability Selection
     public void AbilitySelected(int _ability)
@@ -596,8 +639,19 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
         return _returnArray;
     }
     
-    
-    
+    private void DoAction(GameObject _target)  
+    {
+        CreatureStats _targetCreature = _target.GetComponent<CreatureStats>();
+        Ability _ability = _chosenAbility; // Should use an if to checks if its an ability or an object 
+        if(_ability._damagePoint != 0)
+        {
+            _targetCreature.ChangeHealth(-_ability._damagePoint); // If defeated remove from enemies[]
+            Debug.Log($"{_targetCreature._health}/{_targetCreature._maximumHealth}");
+        }
+        // Continue with everything else 
+        // Remember to change mana of myself and health of myself ( if abilty hurts self ) 
+    } // Should also apply the player stats and  status effects ( last one not really necessary? ) 
+    //Note : Two Differents Objects Types : Combat and Non-Combat
 }
 
 

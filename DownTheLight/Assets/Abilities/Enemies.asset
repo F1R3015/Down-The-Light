@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Enemies
   m_EditorClassIdentifier: 
   _element: 7
-  _affected: 2
+  _affected: 3
   _name: Enemies
   _description: Example ability that affects all enemies
   _manaCost: 0
-  _damagePoint: 0
+  _damagePoint: 2
   _selfDamagePoint: 0
   _healPoint: 0
   _strengthPoint: 0

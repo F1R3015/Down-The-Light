@@ -4,5 +4,5 @@ using UnityEngine;
 
 public enum Type 
 {
-    Enemy,Ally,AllEnemies,AllAllies
+    None,Enemy,Ally,AllEnemies,AllAllies
 }

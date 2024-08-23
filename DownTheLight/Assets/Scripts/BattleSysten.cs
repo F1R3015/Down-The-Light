@@ -6,7 +6,7 @@ public enum BattleState { PLAYERTURN, ENEMYTURN, WIN, LOSE, START }
 
 public class BattleSysten : MonoBehaviour
 {
-
+    //ALL THIS SHALL BE CHANGED
     [SerializeField] GameObject _player;
     //[SerializeField] GameObject _enemies;
     //[SerializeField] GameObject _playerPosition;
@@ -17,7 +17,7 @@ public class BattleSysten : MonoBehaviour
     void Start()
     {
         _state = BattleState.START;
-       // _player.transform.position = _playerPosition.transform.position;
+       // _player.transform.position = _playerPosition.transform.position; Position the allies and players in their respetive positions
         //_enemyPosition.transform.position = _enemyPosition.transform.position;
     }
 

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Ally
   m_EditorClassIdentifier: 
   _element: 3
-  _affected: 1
+  _affected: 2
   _name: Ally
   _description: Example ability that affects one ally
   _manaCost: 0
-  _damagePoint: 0
+  _damagePoint: 2
   _selfDamagePoint: 0
   _healPoint: 0
   _strengthPoint: 0

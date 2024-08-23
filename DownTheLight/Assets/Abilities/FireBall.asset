@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: FireBall
   m_EditorClassIdentifier: 
   _element: 1
-  _affected: 0
+  _affected: 1
   _name: FireBall
   _description: Throws a FireBall to an Enemy
-  _manaCost: 10
-  _damagePoint: 5
+  _manaCost: 4
+  _damagePoint: 2
   _selfDamagePoint: 0
   _healPoint: 0
   _strengthPoint: 0

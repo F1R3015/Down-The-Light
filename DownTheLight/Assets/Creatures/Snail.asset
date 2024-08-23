@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f80c964aaa37d6043881836452bf0b78, type: 3}
   m_Name: Snail
   m_EditorClassIdentifier: 
-  _health: 4
-  _maximumHealth: 4
+  _health: 6
+  _maximumHealth: 6
   _mana: 5
   _maxMana: 5
-  _primaryType: 3
-  _secondaryType: 0
+  _primaryElement: 3
+  _secondaryElement: 0
   _strength: 2
   _baseStrength: 2
   _defence: 3
