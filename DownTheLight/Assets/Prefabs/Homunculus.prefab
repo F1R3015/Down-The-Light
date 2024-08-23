@@ -329,7 +329,7 @@ MonoBehaviour:
   _fleeButton: {fileID: 0}
   _alchemyButton: {fileID: 0}
   _abilityMenu: {fileID: 0}
-  _creature: {fileID: 0}
+  _creature: {fileID: 3976007152368229819}
   _abilityUI1: {fileID: 0}
   _abilityUI2: {fileID: 0}
   _abilityUI3: {fileID: 0}

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class CreatureStats : MonoBehaviour
 {
-    // Note: Change stats into dictionary?
+    // Note: MUST add Math.Min(_maxVal,_newVal) and Max to ALL changes
     #region Variables 
     public int _health;
 
@@ -80,7 +80,7 @@ public class CreatureStats : MonoBehaviour
         _secondaryElement = _element;
     }
 
-    public void ChangeStrenth(int _strenthAlter)
+    public void ChangeStrength(int _strenthAlter)
     {
         _strength += _strenthAlter;
     }

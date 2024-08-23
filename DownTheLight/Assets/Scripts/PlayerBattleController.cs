@@ -12,7 +12,7 @@ public enum BattleTurnState
     SelectAction, SelectAbility, SelectObject, SelectTarget, Waiting
 }
 // NOTE: SHOULD ADD NUMBERS TO HEALTH AND MANA CANVAS
-public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTEM TO FUNCTION LIKE ACTION SYSTEM -> USE THE AOFA BUTTONS AND NOT UI 
+public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTEM TO FUNCTION LIKE ACTION SYSTEM -> USE THE AOFA BUTTONS AND NOT UI 
 {
     #region Input Actions
     PlayerAction _inputAction;
@@ -119,7 +119,7 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
     }
     private BattleTurnState _turnState;
     private BattleTurnState _previousTurn;
-
+    private BattleSystem _battleSystem; 
 
     #endregion
 
@@ -143,14 +143,7 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
         _allies = GameObject.FindGameObjectsWithTag("Ally");
         _allies = SortEntitiesByXPosition(_allies);
         _chosenAbility = null;
-
-        //Delete when turns system completed ( The Battle Manager will be the one doing it) 
-
-        _turnState = BattleTurnState.SelectAction; // Should be Waiting when turn system completed and using EnterNewState()
-
-        AOFAEnable();
-        AcceptEnable();
-
+        _battleSystem = GameObject.FindGameObjectWithTag("BattleSystem").GetComponent<BattleSystem>();
     }
 
     
@@ -234,32 +227,40 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
                 AbilityChosen(_selectedAbility);
                 break;
             case BattleTurnState.SelectTarget:
-                AllDisable();
                 _goBackButton.SetActive(false);
                 switch (_targetType)
                 {
                     case Type.Enemy:
                         _enemies[_selectTarget].transform.GetChild(0).gameObject.SetActive(false);
-                        DoAction(_enemies[_selectTarget]); // Note:  Call  coroutine better for animation + waiting ?
+                        DoAction(_enemies[_selectTarget]); // Note:  Call  coroutine better for animation + waiting 
+                        _enemies[_selectTarget].transform.GetChild(1).gameObject.SetActive(false);
                         break;
                     case Type.Ally:
                         _allies[_selectTarget].transform.GetChild(0).gameObject.SetActive(false);
-                        DoAction(_allies[_selectTarget]); // Note:  Call  coroutine better for animation + waiting ? 
+                        DoAction(_allies[_selectTarget]); // Note:  Call  coroutine better for animation + waiting 
+                        _enemies[_selectTarget].transform.GetChild(1).gameObject.SetActive(false);
                         break;
                     case Type.AllEnemies:
                         foreach(GameObject _enemy in _enemies)
                         {
                             _enemy.transform.GetChild(0).gameObject.SetActive(false);
-                            DoAction(_enemy); // Note:  Call  coroutine better for animation + waiting ? 
+                            DoAction(_enemy); // Note:  Call  coroutine better for animation + waiting 
+                        }
+                        foreach(GameObject _enemy in _enemies)
+                        {
+                            _enemy.transform.GetChild(1).gameObject.SetActive(false);
                         }
                         break;
                     case Type.AllAllies:
                         foreach(GameObject _ally in _allies)
                         {
                             _ally.transform.GetChild(0).gameObject.SetActive(false);
-                            DoAction(_ally); // Note:  Call  coroutine better for animation + waiting ? 
+                            DoAction(_ally); // Note:  Call  coroutine better for animation + waiting 
                         }
-
+                        foreach(GameObject _enemy in _enemies)
+                        {
+                            _enemy.transform.GetChild(1).gameObject.SetActive(false);
+                        }
                         break;
                 }
                 // Set null all not necesary things -->
@@ -269,8 +270,11 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
                 _chosenAbility = null;
                 _targetType = Type.None;
                 SelectTarget = -1;
-                break;
+                _abilityDescriptionUI.GetComponentInChildren<Text>().text = ""; // Resets the description to null
                 // <--
+                EndTurn();
+                break;
+
             default:
                 break;
         }
@@ -464,13 +468,22 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
         _leftAction.performed -= Left;
     }
 
-    private void AllDisable()
+    private void EndTurn()
     {
         AOFADisable();
         AcceptDisable();
         CancelDisable();
         RightDisable();
         LeftDisable();
+        _battleSystem.PlayerTurnFinished();
+    }
+
+    public void StartTurn()
+    {
+        _turnState = BattleTurnState.SelectAction; // Should be Waiting when turn system completed and using EnterNewState()
+        _battleButtons.SetActive(true);
+        AOFAEnable();
+        AcceptEnable();
     }
     #endregion
 
@@ -505,13 +518,13 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
         }
     }
 
-    public void AbilityChosen(int _ability)
+    public void AbilityChosen(int _ability) // Note: If ability null or not enought mana make sound ( Also change ability appearence if no mana ) 
     {
         
         switch (_ability)
         {
             case 1:
-                if (!_creature._ability1.IsUnityNull())
+                if (!_creature._ability1.IsUnityNull() && _creature._mana >= _creature._ability1._manaCost)
                 {
                     _abilityMenu.SetActive(false);
                     _chosenAbility = _creature._ability1;
@@ -519,7 +532,7 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
                 }
                 break;
             case 2:
-                if (!_creature._ability2.IsUnityNull())
+                if (!_creature._ability2.IsUnityNull() && _creature._mana >= _creature._ability1._manaCost)
                 {
                     _abilityMenu.SetActive(false);
                     _chosenAbility = _creature._ability2;
@@ -528,7 +541,7 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
                 }
                 break;
             case 3:
-                if (!_creature._ability3.IsUnityNull())
+                if (!_creature._ability3.IsUnityNull() && _creature._mana >= _creature._ability1._manaCost)
                 {
                     _abilityMenu.SetActive(false);
                     _chosenAbility = _creature._ability3;
@@ -537,7 +550,7 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
                 }
                 break;
             case 4:
-                if (!_creature._ability4.IsUnityNull())
+                if (!_creature._ability4.IsUnityNull() && _creature._mana >= _creature._ability1._manaCost)
                 {
                     _abilityMenu.SetActive(false);
                     _chosenAbility = _creature._ability4;
@@ -642,16 +655,53 @@ public class BattleBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
     private void DoAction(GameObject _target)  
     {
         CreatureStats _targetCreature = _target.GetComponent<CreatureStats>();
-        Ability _ability = _chosenAbility; // Should use an if to checks if its an ability or an object 
+        Ability _ability = _chosenAbility; // Note: Should use an if to checks if its an ability or an object 
+        // Note: Should be ordered
+        if(_ability._manaCost != 0)
+        {
+            _creature.ChangeMana(-_ability._manaCost);
+        }
         if(_ability._damagePoint != 0)
         {
             _targetCreature.ChangeHealth(-_ability._damagePoint); // If defeated remove from enemies[]
+            if(_targetCreature._health <= 0)
+            {
+                _target.SetActive(false); // Note:  Should do it the gameObject itself
+                _enemies = _enemies.Where(val => val != _target).ToArray(); // Alternatly, if enemies could die without player attack then they should disable and be ignored
+            }
             Debug.Log($"{_targetCreature._health}/{_targetCreature._maximumHealth}");
         }
-        // Continue with everything else 
-        // Remember to change mana of myself and health of myself ( if abilty hurts self ) 
-    } // Should also apply the player stats and  status effects ( last one not really necessary? ) 
+        if(_ability._healPoint != 0)
+        {
+            _targetCreature.ChangeHealth(_ability._healPoint);
+        }
+        if(_ability._accuracyPoint != 0)
+        {
+            _targetCreature.ChangeAccuracy(_ability._accuracyPoint);
+        }
+        if(_ability._defencePoint != 0)
+        {
+            _targetCreature.ChangeDefence( _ability._defencePoint);
+        }
+        if (_ability._selfDamagePoint != 0)
+        {
+            _creature.ChangeHealth(_ability._selfDamagePoint);
+        }
+        if(_ability._manaPoint != 0)
+        {
+            _targetCreature.ChangeMana(_ability._manaPoint);
+        }
+        if(_ability._speedPoint != 0)
+        {
+            _targetCreature.ChangeSpeed(_ability._speedPoint);
+        }
+        if(_ability._strengthPoint != 0)
+        {
+            _targetCreature.ChangeStrength( _ability._strengthPoint);
+        }
+    } // Note: Should also apply the player stats and  status effects ( last one not really necessary? ) 
     //Note : Two Differents Objects Types : Combat and Non-Combat
+
 }
 
 

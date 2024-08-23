@@ -130,6 +130,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2751345698072950787, guid: 66e8668b767d3fd4e87a7ea9601c954b, type: 3}
+      propertyPath: _manaBar
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4451186257535999615, guid: 66e8668b767d3fd4e87a7ea9601c954b, type: 3}
       propertyPath: m_Name
       value: Snail (3)
@@ -2265,7 +2269,7 @@ GameObject:
   - component: {fileID: 1251891130}
   m_Layer: 0
   m_Name: BattleSystem
-  m_TagString: Untagged
+  m_TagString: BattleSystem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2283,6 +2287,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _player: {fileID: 1284438691}
+  _state: 5
 --- !u!4 &1251891131
 Transform:
   m_ObjectHideFlags: 0
@@ -2303,17 +2308,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2712582525491087751, guid: 0a15f23257fd1914280b0b7ad13f8409, type: 3}
   m_PrefabInstance: {fileID: 5668065402819511336}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1284438692 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3976007152368229819, guid: 0a15f23257fd1914280b0b7ad13f8409, type: 3}
-  m_PrefabInstance: {fileID: 5668065402819511336}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1284438691}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfe850af5199db64ab0a20c4e267a79c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1294137159
 GameObject:
   m_ObjectHideFlags: 0
@@ -2944,7 +2938,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2027325369
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3033,10 +3027,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 791771570443167060, guid: 0a15f23257fd1914280b0b7ad13f8409, type: 3}
-      propertyPath: _creature
-      value: 
-      objectReference: {fileID: 1284438692}
     - target: {fileID: 791771570443167060, guid: 0a15f23257fd1914280b0b7ad13f8409, type: 3}
       propertyPath: _abilityUI1
       value: 

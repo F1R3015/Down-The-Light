@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Ally
+  - BattleSystem
   layers:
   - Default
   - TransparentFX
