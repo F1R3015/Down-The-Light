@@ -8,8 +8,8 @@ public enum BattleState { DECIDETURN, PLAYERTURN, ENEMYTURN, WIN, LOSE, START }
 public class BattleSystem : MonoBehaviour
 {
     //ALL THIS SHALL BE CHANGED
-    [SerializeField] public GameObject[] _allies;
-    [SerializeField] public GameObject[] _enemies;
+    [SerializeField] public GameObject[] _allies; //Note: Call an event when modified
+    [SerializeField] public GameObject[] _enemies; //Note: Call an event when modified
     [SerializeField] public List<GameObject> _turns;
     //[SerializeField] GameObject _playerPosition;
     //[SerializeField] GameObject _enemyPosition;
@@ -26,10 +26,12 @@ public class BattleSystem : MonoBehaviour
 
     void Start()
     {
+
+        // Maybe a coroutine? 
         _state = BattleState.START;
-        StartCoroutine(PlayerTurn()); // Note: Should be the first in _turns
-       // _player.transform.position = _playerPosition.transform.position; Position the allies and players in their respetive positions
-        //_enemyPosition.transform.position = _enemyPosition.transform.position;
+        // Note: Start Animation
+        StartCoroutine(DecidesTurn()); 
+       
     }
 
     public BattleState GetState() { return _state; }
@@ -53,7 +55,20 @@ public class BattleSystem : MonoBehaviour
 
     public void EnemyLose() { _state = BattleState.WIN;  }
 
-    public void EnemyTurnFinished() { _turns.Remove(_turns.First()); _state = BattleState.DECIDETURN; StartCoroutine(DecidesTurn()); }
+    public void EnemyTurnFinished() 
+    {
+        if(_allies.Length == 0)
+        {
+            _state = BattleState.LOSE;
+            Debug.Log("LOSE");
+        }
+        else 
+        {
+            _turns.Remove(_turns.First());
+            _state = BattleState.DECIDETURN;
+            StartCoroutine(DecidesTurn());
+        }
+    }
 
     IEnumerator PlayerTurn()
     {
@@ -66,8 +81,7 @@ public class BattleSystem : MonoBehaviour
     {
         yield return new WaitForSeconds(3);
         _state = BattleState.ENEMYTURN;
-        Debug.Log("ENEMY ATTAKCS WAAA"); // Note: It should call the enemy AI
-        EnemyTurnFinished();// Note: Delete when enemy AI is done
+        _turns[0].GetComponent<EnemyAI>().StartTurn();
     }
 
     IEnumerator DecidesTurn()
@@ -117,9 +131,9 @@ public class BattleSystem : MonoBehaviour
 
 
         var _returnArray = new GameObject[_lowerPositionArray.Length + _higherPositionArray.Length + 1];
-        _lowerPositionArray.CopyTo(_returnArray, 0);
-        _returnArray[_lowerPositionArray.Length] = _pivot;
-        _higherPositionArray.CopyTo(_returnArray, _lowerPositionArray.Length + 1);
+        _higherPositionArray.CopyTo(_returnArray, 0);
+        _returnArray[_higherPositionArray.Length] = _pivot;
+        _lowerPositionArray.CopyTo(_returnArray, _higherPositionArray.Length + 1);
         return _returnArray;
     }
 }

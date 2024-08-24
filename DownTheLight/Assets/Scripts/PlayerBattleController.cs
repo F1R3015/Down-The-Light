@@ -676,7 +676,7 @@ public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
             }
             else
             {
-                _enemies[_selectTarget].transform.GetChild(1).gameObject.SetActive(false);
+                _target.transform.GetChild(1).gameObject.SetActive(false);
             }
             Debug.Log($"{_targetCreature._health}/{_targetCreature._maximumHealth}");
         }

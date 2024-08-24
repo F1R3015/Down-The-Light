@@ -175,7 +175,7 @@ public class CreatureStats : MonoBehaviour
         _battleSystem = GameObject.FindGameObjectWithTag("BattleSystem").GetComponent<BattleSystem>();
     }
 
-    public IEnumerator WaitForNextTurn()
+    public IEnumerator WaitForNextTurn() // Should have a waiting system
     {
         yield return new WaitForSeconds(10-_speed); // Wait Time should be less based in the speed / Note: Temporal is 10-_speed, should be changed in future
         _battleSystem.TurnReady(this.gameObject);
