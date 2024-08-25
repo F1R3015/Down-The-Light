@@ -20,4 +20,4 @@ Bucket list:
 - Update when an ally is dead
 - ALL the dungeon part :)
 - Party System
-  
+  - Apply Stats, Elemental Advantage and Crits to attacks
