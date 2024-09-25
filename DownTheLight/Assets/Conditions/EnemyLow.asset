@@ -12,3 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ff7cd032db769142844eb12cb5abc3c, type: 3}
   m_Name: EnemyLow
   m_EditorClassIdentifier: 
+  _subject: 0
+  _comparison: 2
+  _percentage: 0
+  _elementAdvantage: 0
+  _target: 3
+  _additionalCondition: []

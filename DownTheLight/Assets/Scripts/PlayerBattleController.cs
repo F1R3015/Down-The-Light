@@ -121,6 +121,7 @@ public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
     private BattleTurnState _previousTurn;
     private BattleSystem _battleSystem; 
 
+
     #endregion
 
     private void Awake()
@@ -475,7 +476,7 @@ public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
         CancelDisable();
         RightDisable();
         LeftDisable();
-        StartCoroutine(_creature.WaitForNextTurn());
+        _creature.GetComponent<WaitingCreatureScript>().StartWaiting();
         _creature = null;
         _battleSystem.PlayerTurnFinished();
     }

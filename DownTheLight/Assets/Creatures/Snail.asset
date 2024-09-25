@@ -12,21 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f80c964aaa37d6043881836452bf0b78, type: 3}
   m_Name: Snail
   m_EditorClassIdentifier: 
-  _health: 6
   _maximumHealth: 6
-  _mana: 5
   _maxMana: 5
   _primaryElement: 3
   _secondaryElement: 0
-  _strength: 2
   _baseStrength: 2
-  _defence: 3
   _baseDefence: 3
-  _speed: 1
   _baseSpeed: 1
-  _accuracy: 3
   _baseAccuracy: 3
-  _ability1: {fileID: 0}
-  _ability2: {fileID: 0}
+  _ability1: {fileID: 11400000, guid: a1fbaaf4074c28e4487c75a49047c853, type: 2}
+  _ability2: {fileID: 11400000, guid: 4c0dd9e1f511f494ca6b48fe19240f0f, type: 2}
   _ability3: {fileID: 0}
   _ability4: {fileID: 0}

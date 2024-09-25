@@ -258,6 +258,7 @@ GameObject:
   - component: {fileID: 6476197885889663226}
   - component: {fileID: 1785324496342920649}
   - component: {fileID: 3976007152368229819}
+  - component: {fileID: 8664354731050061813}
   m_Layer: 0
   m_Name: Homunculus
   m_TagString: Ally
@@ -343,6 +344,18 @@ MonoBehaviour:
   _healthBar: {fileID: 2571591007466535794}
   _manaBar: {fileID: 726093994771326589}
   _creatureBlueprint: {fileID: 11400000, guid: 0ec70be008ecc95498540a4db75a6edc, type: 2}
+--- !u!114 &8664354731050061813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2712582525491087751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f53fcf519380be546af3fd16a8266bff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3430831598603596669
 GameObject:
   m_ObjectHideFlags: 0

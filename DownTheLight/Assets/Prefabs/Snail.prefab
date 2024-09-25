@@ -211,6 +211,7 @@ GameObject:
   - component: {fileID: 6844931590938874687}
   - component: {fileID: 2751345698072950787}
   - component: {fileID: 8240395340815298328}
+  - component: {fileID: 3726020321029057872}
   m_Layer: 0
   m_Name: Snail
   m_TagString: Enemy
@@ -279,6 +280,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd68c004b21733949b10b8fdf192429a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currentState: 0
+--- !u!114 &3726020321029057872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4451186257535999615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f53fcf519380be546af3fd16a8266bff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8063834704459265423

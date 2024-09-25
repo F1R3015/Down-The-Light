@@ -18,6 +18,7 @@ public class EnemyAI : MonoBehaviour
     protected GameObject[] _allies; // Player
     protected List<GameObject> _targets;
     protected Ability _ability;
+    protected WaitingCreatureScript _waitingScript;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +28,7 @@ public class EnemyAI : MonoBehaviour
         _enemies = _battleSystem._enemies;
         _allies = _battleSystem._allies;
         _targets = new List<GameObject>();
+        _waitingScript = GetComponent<WaitingCreatureScript>();
     }
 
     // Update is called once per frame
@@ -52,7 +54,7 @@ public class EnemyAI : MonoBehaviour
         _targets.Clear();
         _ability = null;
         _currentState = EnemyStateMachine.Waiting;
-        StartCoroutine(_stats.WaitForNextTurn());
+        _waitingScript.StartWaiting();
         _battleSystem.EnemyTurnFinished();
         
     }
@@ -65,7 +67,6 @@ public class EnemyAI : MonoBehaviour
     protected void DoAction(GameObject _target)
     {
         CreatureStats _targetCreature = _target.GetComponent<CreatureStats>();
-        // Note: Should be ordered
         // Removed mana cost for enemies
         if (_ability._damagePoint != 0)
         {
@@ -74,8 +75,8 @@ public class EnemyAI : MonoBehaviour
             {
                 _target.SetActive(false); // Note:  Should do it the gameObject itself
                 _battleSystem._turns.Remove(_target);
-                _enemies = _enemies.Where(val => val != _target).ToArray();
-                _battleSystem._enemies = _enemies;
+                _allies = _allies.Where(val => val != _target).ToArray();
+                _battleSystem._allies = _allies;
             }
             else
             {
