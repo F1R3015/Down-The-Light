@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 906ba543f1618ca43b1b5999acd0b870, type: 3}
-  m_Name: FireBall
+  m_Name: Enemies
   m_EditorClassIdentifier: 
-  _element: 1
-  _affected: 1
-  _name: FireBall
-  _description: Throws a FireBall to an Enemy
-  _manaCost: 4
+  _element: 7
+  _affected: 3
+  _name: Enemies
+  _description: Example ability that affects all enemies
+  _manaCost: 0
   _damagePoint: 2
   _selfDamagePoint: 0
   _healPoint: 0

@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 906ba543f1618ca43b1b5999acd0b870, type: 3}
-  m_Name: FireBall
+  m_Name: MudBall
   m_EditorClassIdentifier: 
-  _element: 1
+  _element: 3
   _affected: 1
-  _name: FireBall
-  _description: Throws a FireBall to an Enemy
-  _manaCost: 4
-  _damagePoint: 2
+  _name: MudBall
+  _description: Throws a mud ball that decrese defence
+  _manaCost: 2
+  _damagePoint: 0
   _selfDamagePoint: 0
   _healPoint: 0
   _strengthPoint: 0
   _speedPoint: 0
-  _defencePoint: 0
+  _defencePoint: -2
   _accuracyPoint: 0
   _manaPoint: 0

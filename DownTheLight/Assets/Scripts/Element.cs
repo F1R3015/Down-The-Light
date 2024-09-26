@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum Type 
+public enum Element 
 {
-    None,Enemy,Ally,AllEnemies,AllAllies
+    NONE, FIRE, WATER, EARTH, WOOD, METAL, SHADOW, LIGHT
 }
