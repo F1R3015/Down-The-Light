@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f80c964aaa37d6043881836452bf0b78, type: 3}
   m_Name: Homunculus
   m_EditorClassIdentifier: 
-  _maximumHealth: 10
+  _maximumHealth: 100
   _maxMana: 20
   _primaryElement: 6
   _secondaryElement: 0

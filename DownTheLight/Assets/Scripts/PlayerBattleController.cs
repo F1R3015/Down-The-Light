@@ -84,12 +84,13 @@ public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
     {
         get { return _selectTarget; }
         set {
+            // Disable the cursor in the old selected target
             if (_selectTarget != -1)
             {
                 switch (_targetType)
                 {
                     case Type.Enemy:
-                        _enemies[_selectTarget].transform.GetChild(0).gameObject.SetActive(false);
+                        _enemies[_selectTarget].transform.GetChild(0).gameObject.SetActive(false); // TODO: Change to a proper function
                         _enemies[_selectTarget].transform.GetChild(1).gameObject.SetActive(false);
                         break;
                     case Type.Ally:
@@ -100,6 +101,7 @@ public class PlayerBattleController : MonoBehaviour // CHANGE ABILITY MENU SYSTE
                 
             }
             _selectTarget = value;
+            // Enable the cursor in the new selected target
             if (_selectTarget != -1)
             {
                 switch (_targetType)
